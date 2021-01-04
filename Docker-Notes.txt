@@ -1,0 +1,22 @@
+docker-machine stop => shuts down the virtual box linux instance
+docker-machine start
+
+docker container run hello-world => downloads an example image and runs the container -> good test
+docker image pull <image_name> => download an image
+
+Docker File => definition of the contents of the image (i.e port of the Tomcat Server inside the container)
+
+docker container run -p <external-port>:<internal-port> <image-name> => -p stands for publish
+
+docker container ls => list all running containers
+docker container ls -a => All -> running and stopped 
+
+docker-machine ip => if running docker toolbox we need the ip of the Linux running on VirtualBox
+    localhost of the VM is not mapped to local host of Windows
+    localhost:8080 => root on the docker container | 192.168.99.100:8080 root from the browser on windows
+
+docker container stop <id> => we don't need to specify the whole id just enough to uniquely identify the container
+
+
+
+
