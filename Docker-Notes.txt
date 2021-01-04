@@ -1,21 +1,46 @@
 docker-machine stop => shuts down the virtual box linux instance
 docker-machine start
 
-docker container run hello-world => downloads an example image and runs the container -> good test
+docker container run hello-world => downloads an example image if not present locally and runs the container -> good test
 docker image pull <image_name> => download an image
+
+ctrl + c => will exit back to the console but leave the container running
 
 Docker File => definition of the contents of the image (i.e port of the Tomcat Server inside the container)
 
 docker container run -p <external-port>:<internal-port> <image-name> => -p stands for publish
 
 docker container ls => list all running containers
-docker container ls -a => All -> running and stopped 
+docker container ls -a => All -> running and stopped
 
 docker-machine ip => if running docker toolbox we need the ip of the Linux running on VirtualBox
     localhost of the VM is not mapped to local host of Windows
     localhost:8080 => root on the docker container | 192.168.99.100:8080 root from the browser on windows
+    if we map internal 8080 to local 80 we won't need a port number as :80 is a default port
 
 docker container stop <id> => we don't need to specify the whole id just enough to uniquely identify the container
+
+docker container -it <container-name> -i -> interactive | -t -> terminal
+In the course example the instance of an image is alive as long as the command run by docker is active.
+    In the case of the Ubuntu image the command is /bin/bash. Since bash is not connected to a terminal it exits
+    and the container is shut down
+
+docker container -it runs the image in the interactive mode and connects to the terminal
+
+docker container rm <id> => remove stopped container
+docker container prune => will remove all stopped containers -> frees up memory
+
+docker container -d => will run a container in a detached mode -> output of the container console will not be
+    connected to the terminal
+
+docker container logs -f <id> will show the output of the container application to stdout | -f is for fallow it will
+    continuously show updates
+
+docker container exec -it <id> bash => will run a command inside the container -> exec | -it will connect the bash shell
+    to our terminal | exit will return to the terminal
+
+docker image pull <name>:<tag> => if no tag is specified an image tagged latest will be pulled
+
 
 
 
