@@ -41,6 +41,44 @@ docker container exec -it <id> bash => will run a command inside the container -
 
 docker image pull <name>:<tag> => if no tag is specified an image tagged latest will be pulled
 
+Install java jdk on the ubuntu container : => from the container shell (docker container run -it ubuntu)
+apt-get update
+apt-cache search jdk => search the cache for anything with jdk in name
+apt-get install -y openjdk-8-jdk => -y -> yes , will not require confirmation
+javac => to confirm installation
+exit => exit bash shell | will shut down the container | the changes made will persist
+docker container commit -a "<name> <email>" <id> <owner>/<image-name> => will create a new image -a -> author
+    based on the container with id , in case of the course we will get an ubuntu image with the installed java 8
+    on top
+
+&& allows to chain multiple commands on the bash shell
+
+docker image build -t <image-name> . =>  -t -> tag (give the image a name) | . is a directory from which
+    image creation is working  (. is this, current directory, build context)
+
+docker is a Dockerfile a a recipe for creating a new image
+------------------------Example docker file--------------------------------------------
+FROM ubuntu:latest => image we are basing on
+
+MAINTAINER John Smith "contact@domain.com" => information on the creator
+
+RUN apt-get update && apt-get install -y openjdk-8-jdk => commands that docker needs to run on the base image
+
+CMD ["/bin/bash"] => what command should be executed by default when the container is run
+----------------------------------------------------------------------------------------
+
+Every line in the docker file is a step or a layer
+
+WORKDIR <path> i.e /usr/local/bin/ => sets up a default path
+COPY <file-name> (in the folder specified at the end of the build command) <destination-path> =>
+     . will copy to the root or to work folder if it was setup
+     i.e COPY test-program.jar .
+
+When we have set up working directory in the docker file when we run the container in the interactive terminal mode
+    bash shell will be in the working directory not the root
+
+
+
 
 
 
