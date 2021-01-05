@@ -77,6 +77,11 @@ COPY <file-name> (in the folder specified at the end of the build command) <dest
 When we have set up working directory in the docker file when we run the container in the interactive terminal mode
     bash shell will be in the working directory not the root
 
+ADD vs COPY => add can work with remote URLs and unzip archives , it is recommended to use COPY for simplicity
+CMD vs ENTRYPOINT => entry point will always run and CMD is just a default | CMD can be overwritten
+    i.e in  the course example the CMD ["java", "-jar", "test-program.jar"] will run the java program when container runs
+    but we can overwrite that command with i.e /bin/bash and run bash shell instead (it goes after the name of the image)
+    ENTRYPOINT cannot be overwritten
 
 
 
