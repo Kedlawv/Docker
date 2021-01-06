@@ -38,6 +38,7 @@ docker container logs -f <id> will show the output of the container application 
 
 docker container exec -it <id> bash => will run a command inside the container -> exec | -it will connect the bash shell
     to our terminal | exit will return to the terminal
+    If bash is not available in case of using a slimmed image we can run <sh> shell
 
 docker image pull <name>:<tag> => if no tag is specified an image tagged latest will be pulled
 
@@ -83,6 +84,34 @@ CMD vs ENTRYPOINT => entry point will always run and CMD is just a default | CMD
     but we can overwrite that command with i.e /bin/bash and run bash shell instead (it goes after the name of the image)
     ENTRYPOINT cannot be overwritten
 
+When creating docker images always use the most specific base image tags
+    default <latest> will change overtime and most likely break the build
+
+Docker file needs to be called specifically "Dockerfile" no extension
+
+
+/C/Users/user/fleetman-webapp => bash shell path format
+C:\Users\user\fleetman-webapp => windows path format
+
+EXPOSE => command is a not a functional docker file command, it's there purely for
+    documentation i.e EXPOSE 8080 is not setting the port to 8080 it's simply
+    informing that the post is 8080
+
+/usr/local/tomcat/webapps => is a default directory for our code , by default there is some standard files inside
+    like the tomcat welcome page. We can clear the folder when making the image in the docker file by running:
+    RUN rm -rf /usr/local/tomcat/webapps/*    => rm -> remove | -r -> recursive | -f -> force | * -> all
+    this will clear the folder webapps
+
+COPY <source-path> <destination-path> => source file's path is relative to the dockerfile i.e =>
+    COPY ./target/fleetman-0.0.1-SNAPSHOT.war /usr/local/tomcat/webapps/ROOT.war
+    since the dockerfile in this case is in the root directory of the project we start with ./
+    when we put a file at the end of the destination path the source file will be renamed
+    ROOT.war is the default file name Tomcat is expecting
+
+ENV JAVA_OPTS="-Dspring.profiles.active=docker-demo" => the application depends on the stub class that is only
+    available in the specific profile. To pass an argument to the VM from the docker file we us the
+    ENV JAVA_OPTS command
+    ! spaces very important ENV JAVA_OPTS = "" is not the same as ENV JAVA_OPTS=""
 
 
 
