@@ -113,6 +113,9 @@ ENV JAVA_OPTS="-Dspring.profiles.active=docker-demo" => the application depends 
     ENV JAVA_OPTS command
     ! spaces very important ENV JAVA_OPTS = "" is not the same as ENV JAVA_OPTS=""
 
+To deploy the app as a SpringBoot app with embedded Tomcat we change the packaging of the app in the pom.xml
+    from war to jar and change the Dockerfile 
+
 
 
 
