@@ -114,7 +114,72 @@ ENV JAVA_OPTS="-Dspring.profiles.active=docker-demo" => the application depends 
     ! spaces very important ENV JAVA_OPTS = "" is not the same as ENV JAVA_OPTS=""
 
 To deploy the app as a SpringBoot app with embedded Tomcat we change the packaging of the app in the pom.xml
-    from war to jar and change the Dockerfile 
+    from war to jar and change the Dockerfile
+
+docker login
+images uploaded to the docker hub have to have an owner, only official images are allowed to have only a name
+    owner comes before the / owner/image-name => i.e kedlawv/fleetman-webapp
+
+We can add a tag to the image, it will not change the name of the image but it will create an alias, an alternative name
+    docker image tag <image-id> <owner>/<image-name> i.e docker image tag dca kedlawv/fleetman-webapp
+
+docker push <owner>/<image-name>
+
+One container should be exposing only one service (CMD in the Dockerfile)
+SSH => Secure SHell -> secure connection over unsecure network
+
+docker container run -e MYSQL_ROOT_PASSWORD=password -d mysql:5 => -e -> environmental variable
+    mysql instance needs a root password
+
+mysql -u<user-name> -p<password> i.e mysql -uroot -ppassword => connect to mysql console from bash
+    -u => user & -p => password
+
+------------------------------------Docker Network Management--------------------------------------
+
+docker network ls => list all networks
+bridge network is the default network that allows outbound traffic, that's why we can ping from inside the container
+    but it does not allow container to container networking
+
+docker create network <network-name>
+
+docker container run --network my-network --name database -e MYSQL_ROOT_PASSWORD=password -e MYSQL_DATABASE=fleetman -d mysql:5
+    --network <name>=> connect the instance to the network
+    --name <name> => assign a name to the network & this will became a DNS name that will allow other containers
+        to connect to this container
+
+spring.datasource.url=jdbc:mysql://database:3306/fleetman
+    database => the domain name we set up when we run the mysql container
+    3306 => default mysql port
+    fleetman => schema name inside the DB
+
+spring.datasource.username=root => if no user was set up root is the default
+
+docker container run -d -p 80:8080 --network my-network --name fleetman-webapp --rm kedlawv/fleetman-webapp
+    when starting a container with --rm when the container is stopped it will also be removed
+    It's important because if we use a name to identify containers we can only use a name once and stopped
+    containers persist
+
+apk => alpine package manager
+apk add --no-cache mysql-client => install mysql client
+mysql -uroot -ppassword -hdatabase => -h -> host -> DNS of the DB container
+
+Volumes
+Data from mysql container instance is being persisted inside a Volume. When container is stopped and removed.
+
+When a mysql container is run it will have a new volume attached.
+    By default that volume will have a randomly generated name. Every new instance will have
+    a new name assigned.
+To use the same volume between container instances we need to name the volume and pass path of the volume inside the
+        container
+     docker container run -d -v mydata:/var/lib/mysql -e MYSQL_ROOT_PASSWORD=password -e MYSQL_DATABASE=fleetman mysql:5
+     -v => volume & mydata => name & :/var/lib/mysql => path of the volume inside the container
+        As far as I understand the data in the container volume is being backed up outside the container
+        Volume is declared inside the base Dockerfile of the MySQL image
+
+    If we stop and remove a container and run it again mounting the same volume the data will be restored
+
+
+
 
 
 
