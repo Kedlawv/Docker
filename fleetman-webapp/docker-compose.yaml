@@ -1,0 +1,23 @@
+version: "3"
+
+services:
+  fleetman-webapp: # --name
+    image: kedlawv/fleetman-webapp
+    networks: # --network
+      - fleetman-network
+    ports: # -p
+      - 80:8080
+    depends_on:
+      - database # there is no guarantee that the DB will be up, only that container is
+                  # started
+
+  database:
+    image: mysql:5
+    networks:
+      - fleetman-network
+    environment:   # -e
+      - MYSQL_ROOT_PASSWORD=password
+      - MYSQL_DATABASE=fleetman
+
+networks:
+  fleetman-network:

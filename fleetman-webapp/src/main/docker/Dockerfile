@@ -4,7 +4,7 @@ MAINTAINER "com.wabu"
 
 WORKDIR /usr/local/bin/
 
-COPY maven/target/fleetman-0.0.1-SNAPSHOT.jar webapp.jar
+COPY ../../../target/fleetman-0.0.1-SNAPSHOT.jar webapp.jar
 
 EXPOSE 8080
 
