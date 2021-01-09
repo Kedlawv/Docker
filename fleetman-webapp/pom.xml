@@ -163,8 +163,15 @@
 	      <groupId>org.webjars</groupId>
 	      <artifactId>jquery</artifactId>
 	      <version>3.1.0</version>
-	    </dependency>		
-	    
+	    </dependency>
+
+		<dependency>
+			<groupId>io.fabric8</groupId>
+			<artifactId>docker-maven-plugin</artifactId>
+			<version>0.21.0</version>
+		</dependency>
+
+
 	</dependencies>
 	
 	<build>
@@ -176,7 +183,43 @@
 				<configuration>
                 	<mainClass>com.virtualpairprogrammers.TomcatWARApplication</mainClass>
             	</configuration>
-			</plugin>			
+			</plugin>
+			<plugin>
+				<groupId>io.fabric8</groupId>
+				<artifactId>docker-maven-plugin</artifactId>
+				<version>0.21.0</version>
+
+				<configuration>
+<!--					  <dockerHost>http://192.168.99.100/:2375</dockerHost>-->
+					<!--  this is for Mac and Amazon Linux -->
+<!--					 <dockerHost>unix:///var/run/docker.sock</dockerHost>-->
+
+					<verbose>true</verbose>
+
+					<!-- Needed if pushing to DockerHub: preferred to store these in local environment (see the course) -->
+					<authConfig>
+						<username>YOUR-USERNAME</username>
+						<password>YOUR-PASSWORD</password>
+					</authConfig>
+
+					<images>
+						<image>
+							<name>kedlawv/fleetman-webapp</name>
+							<build>
+								<dockerFileDir>${project.basedir}/src/main/docker/</dockerFileDir>
+
+								<!--copies Jar to the maven directory (uses Assembly system)-->
+								<assembly>
+									<descriptorRef>artifact</descriptorRef>
+								</assembly>
+								<tags>
+									<tag>latest</tag>
+								</tags>
+							</build>
+						</image>
+					</images>
+				</configuration>
+			</plugin>
 		</plugins>
 		
 		<resources>

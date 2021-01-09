@@ -178,7 +178,10 @@ To use the same volume between container instances we need to name the volume an
 
     If we stop and remove a container and run it again mounting the same volume the data will be restored
 
+dmp.fabric8.io => maven plugin for docker
 
+Daemon process => a process that runs in the background and doesn't take input from the user. It either does things
+    periodically or waits for other programs to call it.
 
 
 
